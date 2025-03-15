@@ -1,3 +1,7 @@
+import { useParams } from "react-router"
+
 export default function Country() {
-  return <div>Country Page</div>
+  const { countryName } = useParams();
+
+  return <div>{countryName}</div>
 }
