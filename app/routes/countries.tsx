@@ -1,5 +1,6 @@
-import { Link, useLoaderData } from "react-router"
+import { Link } from "react-router"
 import { useState } from "react"
+import type { Route } from "./+types/countries"
 
 export async function clientLoader() {
   const res = await fetch("https://restcountries.com/v3.1/all")
@@ -7,19 +8,28 @@ export async function clientLoader() {
   return data
 }
 
-export default function Countries() {
-  const loaderData = useLoaderData()
+export default function Countries({ loaderData }: Route.ComponentProps) {
   const [search, setSearch] = useState<string>("");
   const [region, setRegion] = useState<string>("");
-
-  const filteredCountries = loaderData.filter((country: any) => {
-    const matchesRegion =
-      !region || country.region.toLowerCase() === region.toLowerCase();
-    const matchesSearch =
-      !search ||
-      country.name.common.toLowerCase().includes(search.toLowerCase());
-    return matchesSearch && matchesRegion;
-  });
+  const [sortOrder, setSortOrder] = useState<string>("");
+  
+  const filteredCountries = loaderData
+    .filter((country: any) => {
+      const matchesRegion =
+        !region || country.region.toLowerCase() === region.toLowerCase();
+      const matchesSearch =
+        !search ||
+        country.name.common.toLowerCase().includes(search.toLowerCase());
+      return matchesSearch && matchesRegion;
+    })
+    .sort((a: any, b: any) => {
+      if (sortOrder === "highest") {
+        return b.population - a.population
+      } else if (sortOrder === "lowest") {
+        return a.population - b.population
+      }
+      return 0
+    });
 
   return (
     <div className="p-6">
@@ -43,6 +53,16 @@ export default function Countries() {
           <option value="asia">Asia</option>
           <option value="europe">Europe</option>
           <option value="oceania">Oceania</option>
+        </select>
+
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+          className="border border-gray-300 rounded px-3 py-2 w-full sm:w-1/2 focus:outline-none focus:border-indigo-500"
+        >
+          <option value="">Population</option>
+          <option value="highest">Highest</option>
+          <option value="lowest">Lowest</option>
         </select>
       </div>
 
