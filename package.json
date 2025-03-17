@@ -2,6 +2,7 @@
   "name": "wephonespec",
   "private": true,
   "type": "module",
+  "homepage": "https://mini-gt.github.io/We-Explore/",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
@@ -26,6 +27,7 @@
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
+    "vite-plugin-static-copy": "^2.3.0",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }
