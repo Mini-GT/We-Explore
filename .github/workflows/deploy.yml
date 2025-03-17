@@ -25,4 +25,3 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
-      - name: Upload artifact
